@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="tr" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LUMERA - Eğitim Platformu</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+  <style>
+    html, body { height: 100%; width: 100%; }
+    * { font-family: 'Inter', sans-serif; box-sizing: border-box; }
+    .title-font { font-family: 'Space Grotesk', sans-serif; }
+    
+    @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+    @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.3); } 50% { box-shadow: 0 0 40px rgba(99, 102, 241, 0.6); } }
+    @keyframes slide-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes check-mark { 0% { stroke-dashoffset: 50; opacity: 0; } 50% { opacity: 1; } 100% { stroke-dashoffset: 0; opacity: 1; } }
+    @keyframes scale-up { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+    @keyframes confetti-fall { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(200px) rotate(360deg); opacity: 0; } }
+    @keyframes countdown-slide-down { 0% { opacity: 0; transform: translateY(-50px); } 100% { opacity: 1; transform: translateY(0); } }
+    @keyframes countdown-glow { 0%, 100% { box-shadow: 0 0 20px rgba(234, 179, 8, 0.4), inset 0 0 20px rgba(234, 179, 8, 0.1); } 50% { box-shadow: 0 0 40px rgba(234, 179, 8, 0.8), inset 0 0 30px rgba(234, 179, 8, 0.2); } }
+    @keyframes slide-in-out { 0% { opacity: 0; transform: translateY(-60px); } 20% { opacity: 1; transform: translateY(0); } 80% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-60px); } }
+    @keyframes typing { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-5px); } }
+    
+    .float-animation { animation: float 3s ease-in-out infinite; }
+    .pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+    .slide-up { animation: slide-up 0.5s ease-out forwards; }
+    .check-animation { animation: check-mark 0.8s ease-out forwards; stroke-dasharray: 50; stroke-dashoffset: 50; }
+    .result-circle { animation: scale-up 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+    .stat-card { animation: scale-up 0.8s ease-out forwards; }
+    .stat-card:nth-child(2) { animation-delay: 0.2s; }
+    .stat-card:nth-child(3) { animation-delay: 0.4s; }
+    .confetti { animation: confetti-fall 2.5s ease-out forwards; }
+    .lumera-countdown { animation: slide-in-out 25s ease-in-out; }
+    .gradient-bg { background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #0f0f23 100%); }
+    .card-gradient { background: linear-gradient(145deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%); backdrop-filter: blur(10px); }
+    .ai-gradient { background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%); }
+    .typing-indicator span { animation: typing 1.4s infinite; display: inline-block; }
+    .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+    .scrollbar-thin::-webkit-scrollbar { width: 6px; }
+    .scrollbar-thin::-webkit-scrollbar-track { background: rgba(255,255,255,0.1); border-radius: 3px; }
+    .scrollbar-thin::-webkit-scrollbar-thumb { background: rgba(99, 102, 241, 0.5); border-radius: 3px; }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full gradient-bg text-white">
+  <div id="app" class="h-full w-full flex flex-col overflow-hidden">
+   <div id="login-screen" class="h-full flex flex-col items-center justify-center p-6">
+    <div class="text-center mb-8 slide-up">
+     <div class="float-animation mb-6">
+      <svg class="w-24 h-24 mx-auto" viewbox="0 0 100 100" fill="none">
+       <defs>
+        <lineargradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+         <stop offset="0%" style="stop-color:#6366f1" />
+         <stop offset="50%" style="stop-color:#8b5cf6" />
+         <stop offset="100%" style="stop-color:#a855f7" />
+        </lineargradient>
+       </defs><circle cx="50" cy="50" r="45" stroke="url(#logoGrad)" stroke-width="3" fill="none" /><path d="M30 50 L45 65 L70 35" stroke="url(#logoGrad)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none" /><circle cx="50" cy="20" r="5" fill="url(#logoGrad)" /><circle cx="80" cy="50" r="4" fill="url(#logoGrad)" opacity="0.7" /><circle cx="50" cy="80" r="4" fill="url(#logoGrad)" opacity="0.7" /><circle cx="20" cy="50" r="3" fill="url(#logoGrad)" opacity="0.5" />
+      </svg>
+     </div>
+     <h1 id="main-title" class="title-font text-5xl font-bold bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-3">LUMERA</h1>
+     <p id="main-subtitle" class="text-gray-400 text-lg">Geleceğini Aydınlat</p>
+    </div>
+    <div class="card-gradient rounded-2xl p-8 w-full max-w-md border border-white/10 slide-up" style="animation-delay: 0.2s">
+     <div class="mb-6">
+      <label class="block text-sm text-gray-400 mb-2">Adınız</label><input type="text" id="user-name" placeholder="Adınızı girin..." class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-indigo-500 transition-colors text-white placeholder-gray-500">
+     </div><button id="login-btn" class="w-full py-4 ai-gradient rounded-xl font-semibold text-lg hover:opacity-90 transition-all pulse-glow cursor-pointer">Başla 🚀</button>
+    </div>
+    <p class="text-gray-500 text-sm mt-6 slide-up" style="animation-delay: 0.4s">AI destekli sınav hazırlık platformu</p>
+   </div>
+   <div id="dashboard" class="h-full hidden overflow-auto flex flex-col">
+    <header class="p-4 border-b border-white/10 flex items-center justify-between sticky top-0 bg-gradient-to-r from-indigo-950/50 to-purple-950/50 backdrop-blur-sm flex-shrink-0">
+     <div class="flex items-center gap-3">
+      <svg class="w-10 h-10" viewbox="0 0 100 100" fill="none">
+       <defs>
+        <lineargradient id="logoGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+         <stop offset="0%" style="stop-color:#6366f1" />
+         <stop offset="100%" style="stop-color:#a855f7" />
+        </lineargradient>
+       </defs><circle cx="50" cy="50" r="45" stroke="url(#logoGrad2)" stroke-width="3" fill="none" /><path d="M30 50 L45 65 L70 35" stroke="url(#logoGrad2)" stroke-width="4" stroke-linecap="round" fill="none" />
+      </svg><span id="header-title" class="title-font text-xl font-bold text-white">LUMERA</span>
+     </div>
+     <div class="flex items-center gap-4">
+      <span id="user-greeting" class="text-gray-400 text-sm"></span><button id="creators-btn" class="p-2 bg-pink-500/20 hover:bg-pink-500/30 rounded-lg transition-colors cursor-pointer" title="Kurucu Paneli">
+       <svg class="w-6 h-6 text-pink-400" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+       </svg></button><button id="events-btn" class="p-2 bg-yellow-500/20 hover:bg-yellow-500/30 rounded-lg transition-colors cursor-pointer relative" title="Etkinlikler">
+       <svg class="w-6 h-6 text-yellow-400" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+       </svg><span id="event-badge" class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">0</span></button><button id="ai-chat-btn" class="p-2 bg-indigo-500/20 rounded-lg hover:bg-indigo-500/30 transition-colors cursor-pointer" title="AI Asistan">
+       <svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+       </svg></button><button id="logout-btn" class="text-gray-400 hover:text-white transition-colors text-sm cursor-pointer">Çıkış</button>
+     </div>
+    </header>
+    <div class="flex-1 overflow-auto">
+     <div id="exam-selection" class="p-6">
+      <h2 class="text-2xl font-bold text-center mb-8">Sınav Türü Seçin</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+       <button class="exam-card card-gradient p-8 rounded-2xl border border-white/10 hover:border-indigo-500/50 transition-all group cursor-pointer" data-exam="LGS">
+        <div class="text-5xl mb-4">
+         📚
+        </div><h3 class="text-2xl font-bold mb-2 group-hover:text-indigo-400 transition-colors">LGS</h3><p class="text-gray-400 text-sm">Liselere Geçiş Sınavı</p>
+        <div class="mt-4 text-xs text-gray-500">
+         Türkçe • Matematik • Fen • Sosyal • Din • İngilizce
+        </div></button><button class="exam-card card-gradient p-8 rounded-2xl border border-white/10 hover:border-purple-500/50 transition-all group cursor-pointer" data-exam="YKS">
+        <div class="text-5xl mb-4">
+         🎓
+        </div><h3 class="text-2xl font-bold mb-2 group-hover:text-purple-400 transition-colors">YKS</h3><p class="text-gray-400 text-sm">Yükseköğretim Kurumları Sınavı</p>
+        <div class="mt-4 text-xs text-gray-500">
+         TYT • AYT • YDT
+        </div></button>
+      </div>
+      <div id="stats-section" class="mt-12 max-w-3xl mx-auto">
+       <h3 class="text-lg font-semibold mb-4 text-gray-300">📊 İstatistikleriniz</h3>
+       <div class="grid grid-cols-3 gap-4">
+        <div class="card-gradient p-4 rounded-xl text-center border border-white/10">
+         <div id="total-questions" class="text-2xl font-bold text-indigo-400">
+          0
+         </div>
+         <div class="text-xs text-gray-500">
+          Toplam Soru
+         </div>
+        </div>
+        <div class="card-gradient p-4 rounded-xl text-center border border-white/10">
+         <div id="correct-answers" class="text-2xl font-bold text-green-400">
+          0
+         </div>
+         <div class="text-xs text-gray-500">
+          Doğru
+         </div>
+        </div>
+        <div class="card-gradient p-4 rounded-xl text-center border border-white/10">
+         <div id="success-rate" class="text-2xl font-bold text-purple-400">
+          0%
+         </div>
+         <div class="text-xs text-gray-500">
+          Başarı
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div id="subject-selection" class="p-6 hidden">
+      <button id="back-to-exams" class="flex items-center gap-2 text-gray-400 hover:text-white mb-6 transition-colors cursor-pointer">
+       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+       </svg>Geri</button>
+      <h2 id="subject-title" class="text-2xl font-bold text-center mb-8"></h2>
+      <div id="subjects-grid" class="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-4xl mx-auto"></div>
+     </div>
+     <div id="question-screen" class="p-6 hidden">
+      <div class="flex items-center justify-between mb-6">
+       <button id="finish-quiz-btn" class="flex items-center gap-2 px-4 py-2 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded-lg transition-colors cursor-pointer">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>Bitir</button>
+       <div class="flex items-center gap-4">
+        <span id="question-subject" class="text-indigo-400 font-medium"></span><span id="question-counter" class="text-gray-500 text-sm"></span>
+       </div>
+      </div>
+      <div class="max-w-3xl mx-auto">
+       <div id="question-card" class="card-gradient rounded-2xl p-8 border border-white/10 mb-6">
+        <div id="question-loading" class="text-center py-8 hidden">
+         <div class="typing-indicator text-3xl">
+          <span>.</span><span>.</span><span>.</span>
+         </div>
+         <p class="text-gray-400 mt-4">AI soru oluşturuyor...</p>
+        </div>
+        <div id="question-content">
+         <p id="question-text" class="text-lg mb-8 leading-relaxed"></p>
+         <div id="options-container" class="space-y-3"></div>
+        </div>
+       </div>
+       <div id="result-feedback" class="hidden mb-6 p-4 rounded-xl text-center"></div>
+       <div class="flex gap-4">
+        <button id="next-question-btn" class="flex-1 py-4 ai-gradient rounded-xl font-semibold hover:opacity-90 transition-all hidden cursor-pointer">Sonraki Soru →</button>
+       </div>
+      </div>
+     </div>
+     <div id="result-screen" class="h-full hidden flex flex-col items-center justify-center p-6">
+      <div id="confetti-container"></div>
+      <div class="text-center max-w-2xl">
+       <div class="mb-8 result-circle">
+        <svg class="w-32 h-32 mx-auto" viewbox="0 0 100 100" fill="none">
+         <defs>
+          <lineargradient id="checkGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+           <stop offset="0%" style="stop-color:#10b981" />
+           <stop offset="100%" style="stop-color:#34d399" />
+          </lineargradient>
+         </defs><circle cx="50" cy="50" r="45" stroke="url(#checkGrad)" stroke-width="3" fill="none" opacity="0.3" /><path d="M32 50 L45 63 L68 37" stroke="url(#checkGrad)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none" class="check-animation" />
+        </svg>
+       </div>
+       <h2 class="text-4xl font-bold mb-2 slide-up" style="animation-delay: 0.6s">Harika! 🎉</h2>
+       <p class="text-gray-400 mb-8 slide-up" style="animation-delay: 0.7s">Dersin sonuna geldin</p>
+       <div class="grid grid-cols-3 gap-6 mb-8 slide-up" style="animation-delay: 0.8s">
+        <div class="stat-card card-gradient p-6 rounded-2xl border border-white/10">
+         <div class="text-4xl font-bold text-green-400" id="result-correct">
+          0
+         </div>
+         <div class="text-sm text-gray-400 mt-2">
+          Doğru
+         </div>
+        </div>
+        <div class="stat-card card-gradient p-6 rounded-2xl border border-white/10">
+         <div class="text-4xl font-bold text-red-400" id="result-wrong">
+          0
+         </div>
+         <div class="text-sm text-gray-400 mt-2">
+          Yanlış
+         </div>
+        </div>
+        <div class="stat-card card-gradient p-6 rounded-2xl border border-white/10">
+         <div class="text-4xl font-bold text-purple-400" id="result-percentage">
+          0%
+         </div>
+         <div class="text-sm text-gray-400 mt-2">
+          Başarı
+         </div>
+        </div>
+       </div>
+       <div id="success-message" class="card-gradient p-6 rounded-2xl border border-white/10 mb-8 slide-up" style="animation-delay: 1s">
+        <p class="text-lg font-semibold" id="message-text"></p>
+       </div>
+       <div class="flex flex-col gap-3 slide-up" style="animation-delay: 1.1s">
+        <button id="try-again-btn" class="py-4 ai-gradient rounded-xl font-semibold hover:opacity-90 transition-all cursor-pointer">Yeniden Dene 🔄</button><button id="choose-subject-btn" class="py-4 bg-white/10 hover:bg-white/20 rounded-xl font-semibold transition-all border border-white/20 cursor-pointer">Başka Ders Seç 📚</button><button id="go-home-btn" class="py-4 bg-white/10 hover:bg-white/20 rounded-xl font-semibold transition-all border border-white/20 cursor-pointer">Ana Sayfaya Dön 🏠</button>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+  <div id="creators-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+   <div class="card-gradient w-full max-w-3xl rounded-2xl border border-white/10 flex flex-col max-h-[90%]">
+    <div class="p-6 border-b border-white/10 flex items-center justify-between">
+     <h3 class="font-semibold text-2xl flex items-center gap-3"><span class="text-3xl">⚙️</span>Kurucu Paneli</h3><button id="close-creators" class="text-gray-400 hover:text-white transition-colors cursor-pointer">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg></button>
+    </div>
+    <div class="flex-1 overflow-y-auto p-6 space-y-6 scrollbar-thin">
+     <div class="card-gradient p-6 rounded-xl border border-white/10">
+      <h4 class="text-lg font-semibold mb-4 flex items-center gap-2"><span>🌐</span>Site Ayarları</h4>
+      <div class="space-y-4">
+       <div>
+        <label class="block text-sm text-gray-400 mb-2">Site Adı</label><input type="text" id="site-name-input" placeholder="LUMERA" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:border-pink-500 text-white text-sm">
+       </div>
+       <div>
+        <label class="block text-sm text-gray-400 mb-2">Slogan</label><input type="text" id="site-slogan-input" placeholder="Geleceğini Aydınlat" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:border-pink-500 text-white text-sm">
+       </div><button id="save-site-settings" class="w-full py-3 bg-pink-500/30 hover:bg-pink-500/40 rounded-lg font-semibold transition-all cursor-pointer text-pink-400">✓ Ayarları Kaydet</button>
+      </div>
+     </div>
+     <div class="card-gradient p-6 rounded-xl border border-white/10">
+      <h4 class="text-lg font-semibold mb-4 flex items-center gap-2"><span>🎨</span>Logo &amp; Tasarım</h4>
+      <div class="space-y-4">
+       <div class="flex gap-3 items-center">
+        <div class="w-16 h-16 ai-gradient rounded-lg flex items-center justify-center text-3xl cursor-pointer hover:scale-110 transition-transform" id="logo-preview">
+         ✓
+        </div>
+        <div>
+         <label class="block text-sm text-gray-400 mb-2">Logo Emojisi Seç</label><input type="text" id="logo-emoji-input" placeholder="✓" class="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:border-pink-500 text-white text-sm" maxlength="2">
+        </div>
+       </div>
+       <div>
+        <label class="block text-sm text-gray-400 mb-2">Ana Renk</label><input type="color" id="theme-color-input" value="#6366f1" class="w-full h-12 cursor-pointer rounded-lg border border-white/10">
+       </div><button id="save-design-settings" class="w-full py-3 bg-pink-500/30 hover:bg-pink-500/40 rounded-lg font-semibold transition-all cursor-pointer text-pink-400">✓ Tasarımı Kaydet</button>
+      </div>
+     </div>
+     <div class="card-gradient p-6 rounded-xl border border-white/10">
+      <h4 class="text-lg font-semibold mb-4 flex items-center gap-2"><span>📊</span>Platform İstatistikleri</h4>
+      <div class="grid grid-cols-3 gap-4">
+       <div class="bg-white/5 p-4 rounded-lg text-center">
+        <div id="stat-users" class="text-2xl font-bold text-pink-400">
+         0
+        </div>
+        <div class="text-xs text-gray-400 mt-2">
+         Toplam Kullanıcı
+        </div>
+       </div>
+       <div class="bg-white/5 p-4 rounded-lg text-center">
+        <div id="stat-events" class="text-2xl font-bold text-yellow-400">
+         0
+        </div>
+        <div class="text-xs text-gray-400 mt-2">
+         Etkinlik
+        </div>
+       </div>
+       <div class="bg-white/5 p-4 rounded-lg text-center">
+        <div id="stat-questions" class="text-2xl font-bold text-purple-400">
+         0
+        </div>
+        <div class="text-xs text-gray-400 mt-2">
+         Soru Çöz.
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+  <div id="events-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+   <div class="card-gradient w-full max-w-2xl rounded-2xl border border-white/10 flex flex-col max-h-[80%]">
+    <div class="p-4 border-b border-white/10 flex items-center justify-between">
+     <h3 class="font-semibold text-lg flex items-center gap-2"><span>📅 Kuruculara Özel Etkinlikler</span></h3><button id="close-events" class="text-gray-400 hover:text-white transition-colors cursor-pointer">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg></button>
+    </div>
+    <div id="events-list" class="flex-1 overflow-y-auto p-4 space-y-3 scrollbar-thin"></div>
+    <div class="p-4 border-t border-white/10">
+     <button id="register-event-btn" class="w-full py-3 ai-gradient rounded-xl font-semibold hover:opacity-90 transition-all cursor-pointer">+ Yeni Etkinlik Ekle</button>
+    </div>
+   </div>
+  </div>
+  <div id="create-event-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+   <div class="card-gradient w-full max-w-md rounded-2xl border border-white/10 p-6">
+    <h3 class="text-xl font-bold mb-6">🎯 Yeni Etkinlik Oluştur</h3>
+    <div class="space-y-4">
+     <div>
+      <label class="block text-sm text-gray-400 mb-2">Etkinlik Adı</label><input type="text" id="event-name-input" placeholder="örn: LGS Hazırlık Kampı" class="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:border-indigo-500 text-sm">
+     </div>
+     <div>
+      <label class="block text-sm text-gray-400 mb-2">Etkinlik Türü</label><select id="event-type-input" class="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:border-indigo-500 text-sm"><option value="workshop">🎓 Workshop</option><option value="live-class">📺 Canlı Ders</option><option value="exam">🧪 Sınav</option><option value="competition">🏆 Yarışma</option></select>
+     </div>
+     <div>
+      <label class="block text-sm text-gray-400 mb-2">Tarih</label><input type="date" id="event-date-input" class="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:border-indigo-500 text-sm">
+     </div>
+     <div>
+      <label class="block text-sm text-gray-400 mb-2">Saat</label><input type="time" id="event-time-input" class="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:border-indigo-500 text-sm">
+     </div>
+     <div class="flex gap-3">
+      <button id="cancel-event-btn" class="flex-1 py-2 bg-white/10 hover:bg-white/20 rounded-lg transition-all cursor-pointer text-sm">İptal</button><button id="save-event-btn" class="flex-1 py-2 ai-gradient rounded-lg hover:opacity-90 transition-all cursor-pointer text-sm font-semibold">Oluştur</button>
+     </div>
+    </div>
+   </div>
+  </div>
+  <div id="ai-chat-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+   <div class="card-gradient w-full max-w-lg rounded-2xl border border-white/10 flex flex-col" style="max-height: 80%">
+    <div class="p-4 border-b border-white/10 flex items-center justify-between">
+     <div class="flex items-center gap-3">
+      <div class="w-10 h-10 ai-gradient rounded-full flex items-center justify-center">
+       <span class="text-xl">🤖</span>
+      </div>
+      <div>
+       <h3 class="font-semibold">LUMERA AI</h3>
+       <p class="text-xs text-gray-400">Eğitim asistanınız</p>
+      </div>
+     </div><button id="close-chat" class="text-gray-400 hover:text-white transition-colors cursor-pointer">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg></button>
+    </div>
+    <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin">
+     <div class="flex gap-3">
+      <div class="w-8 h-8 ai-gradient rounded-full flex-shrink-0 flex items-center justify-center text-sm">
+       🤖
+      </div>
+      <div class="bg-white/5 rounded-2xl rounded-tl-none p-4 max-w-[80%]">
+       <p class="text-sm">Merhaba! Ben LUMERA AI, eğitim asistanınızım. Size LGS ve YKS konularında yardımcı olabilirim. Ne sormak istersiniz?</p>
+      </div>
+     </div>
+    </div>
+    <div class="p-4 border-t border-white/10">
+     <div class="flex gap-2">
+      <input type="text" id="chat-input" placeholder="Bir soru sorun..." class="flex-1 px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-indigo-500 text-sm"><button id="send-chat" class="px-4 py-3 ai-gradient rounded-xl hover:opacity-90 transition-all cursor-pointer">
+       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+       </svg></button>
+     </div>
+    </div>
+   </div>
+  </div>
+  <script>
+    const defaultConfig = { site_title: 'LUMERA', welcome_text: 'Geleceğini Aydınlat', background_color: '#0f0f23', primary_color: '#6366f1', text_color: '#ffffff', surface_color: '#1a1a3e', accent_color: '#a855f7' };
+    let currentUser = '', currentExam = '', currentSubject = '', questionCount = 0, sessionCorrect = 0, sessionTotal = 0, currentQuestion = null, userStats = [], eventCountdownIntervals = [], events = [];
+    const examSubjects = {
+      LGS: [
+        { id: 'turkce', name: 'Türkçe', icon: '📖', topics: ['Sözcük Türleri', 'Cümle Bilgisi', 'Paragraf', 'Anlam Bilgisi', 'Yazım Kuralları'] },
+        { id: 'matematik', name: 'Matematik', icon: '🔢', topics: ['Sayılar', 'Cebir', 'Geometri', 'Olasılık', 'Denklemler'] },
+        { id: 'fen', name: 'Fen Bilimleri', icon: '🔬', topics: ['Fizik', 'Kimya', 'Biyoloji', 'Dünya ve Evren'] },
+        { id: 'sosyal', name: 'Sosyal Bilgiler', icon: '🌍', topics: ['Tarih', 'Coğrafya', 'Vatandaşlık', 'Ekonomi'] },
+        { id: 'din', name: 'Din Kültürü', icon: '🕌', topics: ['İslam Tarihi', 'Kur\'an', 'Ahlak', 'İbadetler'] },
+        { id: 'ingilizce', name: 'İngilizce', icon: '🇬🇧', topics: ['Grammar', 'Vocabulary', 'Reading', 'Dialogue'] }
+      ],
+      YKS: [
+        { id: 'tyt-turkce', name: 'TYT Türkçe', icon: '📚', topics: ['Paragraf', 'Dil Bilgisi', 'Anlam Bilgisi', 'Söz Sanatları'] },
+        { id: 'tyt-mat', name: 'TYT Matematik', icon: '📐', topics: ['Temel Kavramlar', 'Sayılar', 'Problemler', 'Geometri'] },
+        { id: 'tyt-fen', name: 'TYT Fen', icon: '⚗️', topics: ['Fizik', 'Kimya', 'Biyoloji'] },
+        { id: 'tyt-sosyal', name: 'TYT Sosyal', icon: '📜', topics: ['Tarih', 'Coğrafya', 'Felsefe', 'Din Kültürü'] },
+        { id: 'ayt-mat', name: 'AYT Matematik', icon: '∑', topics: ['Fonksiyonlar', 'Türev', 'İntegral', 'Limit'] },
+        { id: 'ayt-fizik', name: 'AYT Fizik', icon: '⚡', topics: ['Mekanik', 'Elektrik', 'Optik', 'Modern Fizik'] },
+        { id: 'ayt-kimya', name: 'AYT Kimya', icon: '🧪', topics: ['Organik', 'Anorganik', 'Elektrokimya'] },
+        { id: 'ayt-biyoloji', name: 'AYT Biyoloji', icon: '🧬', topics: ['Hücre', 'Genetik', 'Ekoloji', 'İnsan Fizyolojisi'] },
+        { id: 'ayt-edebiyat', name: 'AYT Edebiyat', icon: '✍️', topics: ['Şiir', 'Roman', 'Edebi Akımlar', 'Divan Edebiyatı'] },
+        { id: 'ayt-tarih', name: 'AYT Tarih', icon: '🏛️', topics: ['Osmanlı', 'Cumhuriyet', 'Dünya Tarihi'] },
+        { id: 'ayt-cografya', name: 'AYT Coğrafya', icon: '🗺️', topics: ['Türkiye', 'Dünya', 'Beşeri', 'Fiziki'] },
+        { id: 'ydt-ingilizce', name: 'YDT İngilizce', icon: '🇺🇸', topics: ['Advanced Grammar', 'Reading', 'Translation'] }
+      ]
+    };
+    const questionBank = {
+      'turkce': [() => ({ q: `"${['Kitap okumak', 'Sabah yürüyüşü', 'Müzik dinlemek', 'Doğada vakit geçirmek'][Math.floor(Math.random()*4)]}, insanın ruhunu dinlendirir." cümlesinde altı çizili sözcüğün türü nedir?`, options: ['İsim', 'Sıfat', 'Zarf', 'Fiil'], correct: 0, explanation: 'Sözcük, varlığı karşıladığı için isimdir.' }), () => ({ q: `"${['Bahçedeki çiçekler', 'Sokaktaki kediler', 'Duvardaki resimler', 'Masadaki kitaplar'][Math.floor(Math.random()*4)]} çok güzeldi." cümlesinde kaç sözcük vardır?`, options: ['3', '4', '5', '6'], correct: 1, explanation: 'Cümlede 4 sözcük bulunmaktadır.' })],
+      'matematik': [() => { const a = Math.floor(Math.random() * 50) + 10; const b = Math.floor(Math.random() * 30) + 5; const result = a + b; const opts = [result, result + 3, result - 2, result + 7].sort(() => Math.random() - 0.5); return { q: `${a} + ${b} işleminin sonucu kaçtır?`, options: opts.map(String), correct: opts.indexOf(result), explanation: `${a} + ${b} = ${result}` }; }, () => { const a = Math.floor(Math.random() * 12) + 2; const b = Math.floor(Math.random() * 10) + 2; const result = a * b; const opts = [result, result + a, result - b, result + 5].sort(() => Math.random() - 0.5); return { q: `${a} × ${b} işleminin sonucu kaçtır?`, options: opts.map(String), correct: opts.indexOf(result), explanation: `${a} × ${b} = ${result}` }; }],
+      'fen': [() => ({ q: 'Aşağıdakilerden hangisi yenilenebilir enerji kaynağıdır?', options: ['Güneş enerjisi', 'Petrol', 'Doğalgaz', 'Kömür'], correct: 0, explanation: 'Güneş enerjisi yenilenebilir bir enerji kaynağıdır.' })],
+      'sosyal': [() => ({ q: `Türkiye Cumhuriyeti hangi yıl kurulmuştur?`, options: ['1920', '1921', '1922', '1923'], correct: 3, explanation: 'Türkiye Cumhuriyeti 29 Ekim 1923\'te kurulmuştur.' })],
+      'din': [() => ({ q: 'İslam\'ın beş şartından biri olan namaz, günde kaç vakit kılınır?', options: ['3', '4', '5', '6'], correct: 2, explanation: 'Namaz günde 5 vakit kılınır: Sabah, Öğle, İkindi, Akşam, Yatsı.' })],
+      'ingilizce': [() => ({ q: `"She ___ to school every day." cümlesinde boşluğa ne gelmelidir?`, options: ['go', 'goes', 'going', 'went'], correct: 1, explanation: '3. tekil şahıslarda fiil "-s" takısı alır.' })],
+      'default': [() => ({ q: `Bu ders için örnek bir soru: ${Math.random().toString(36).substring(7)} konusu hakkında hangisi doğrudur?`, options: ['Seçenek A', 'Seçenek B', 'Seçenek C', 'Seçenek D'], correct: Math.floor(Math.random() * 4), explanation: 'Bu bir örnek açıklamadır.' })]
+    };
+    function generateQuestion(subjectId) { const baseSubject = subjectId.replace('tyt-', '').replace('ayt-', '').replace('ydt-', ''); const generators = questionBank[baseSubject] || questionBank['default']; const generator = generators[Math.floor(Math.random() * generators.length)]; return generator(); }
+    function generateAIResponse(message) { const lowerMsg = message.toLowerCase(); if (lowerMsg.includes('merhaba') || lowerMsg.includes('selam')) return 'Merhaba! 👋 Size nasıl yardımcı olabilirim?'; if (lowerMsg.includes('lgs')) return 'LGS hakkında sorulardır. 8. sınıf öğrencileri için önemli bir sınavdır!'; return 'Bu konuda size yardımcı olmaya çalışayım. Başka bir sorunuz var mı? 🎯'; }
+    function showScreen(screenId) { document.querySelectorAll('#exam-selection, #subject-selection, #question-screen, #result-screen').forEach(el => el.classList.add('hidden')); document.getElementById(screenId).classList.remove('hidden'); }
+    function renderSubjects(examType) { const subjects = examSubjects[examType]; const grid = document.getElementById('subjects-grid'); grid.innerHTML = subjects.map(subject => `<button class="subject-card card-gradient p-6 rounded-xl border border-white/10 hover:border-indigo-500/50 transition-all text-left group cursor-pointer" data-subject="${subject.id}"><div class="text-3xl mb-3">${subject.icon}</div><h3 class="font-semibold group-hover:text-indigo-400 transition-colors">${subject.name}</h3><p class="text-xs text-gray-500 mt-2">${subject.topics.slice(0, 3).join(' • ')}</p></button>`).join(''); document.querySelectorAll('.subject-card').forEach(card => card.addEventListener('click', () => startQuiz(card.dataset.subject))); }
+    function startQuiz(subjectId) { currentSubject = subjectId; questionCount = 0; sessionCorrect = 0; sessionTotal = 0; const subject = [...examSubjects.LGS, ...examSubjects.YKS].find(s => s.id === subjectId); document.getElementById('question-subject').textContent = subject?.name || subjectId; showScreen('question-screen'); loadNewQuestion(); }
+    function loadNewQuestion() { const loading = document.getElementById('question-loading'); const content = document.getElementById('question-content'); const resultFeedback = document.getElementById('result-feedback'); const nextBtn = document.getElementById('next-question-btn'); loading.classList.remove('hidden'); content.classList.add('hidden'); resultFeedback.classList.add('hidden'); nextBtn.classList.add('hidden'); setTimeout(() => { questionCount++; document.getElementById('question-counter').textContent = `Soru ${questionCount}`; currentQuestion = generateQuestion(currentSubject); document.getElementById('question-text').textContent = currentQuestion.q; const optionsContainer = document.getElementById('options-container'); optionsContainer.innerHTML = currentQuestion.options.map((opt, idx) => `<button class="option-btn w-full p-4 bg-white/5 border border-white/10 rounded-xl text-left hover:border-indigo-500/50 hover:bg-white/10 transition-all flex items-center gap-3 cursor-pointer" data-index="${idx}"><span class="w-8 h-8 flex items-center justify-center bg-white/10 rounded-lg text-sm font-medium">${String.fromCharCode(65 + idx)}</span><span>${opt}</span></button>`).join(''); document.querySelectorAll('.option-btn').forEach(btn => btn.addEventListener('click', function() { checkAnswer(parseInt(this.dataset.index)); })); loading.classList.add('hidden'); content.classList.remove('hidden'); }, 1000 + Math.random() * 500); }
+    async function checkAnswer(selectedIndex) { const isCorrect = selectedIndex === currentQuestion.correct; sessionTotal++; if (isCorrect) sessionCorrect++; document.querySelectorAll('.option-btn').forEach((btn, idx) => { btn.disabled = true; if (idx === currentQuestion.correct) btn.classList.add('border-green-500', 'bg-green-500/20'); else if (idx === selectedIndex && !isCorrect) btn.classList.add('border-red-500', 'bg-red-500/20'); }); const feedback = document.getElementById('result-feedback'); feedback.className = `mb-6 p-4 rounded-xl text-center ${isCorrect ? 'bg-green-500/20 border border-green-500/50' : 'bg-red-500/20 border border-red-500/50'}`; feedback.innerHTML = `<div class="text-2xl mb-2">${isCorrect ? '✅ Doğru!' : '❌ Yanlış!'}</div><p class="text-sm text-gray-300">${currentQuestion.explanation}</p>`; feedback.classList.remove('hidden'); document.getElementById('next-question-btn').classList.remove('hidden'); if (currentUser && userStats.length < 999) { await window.dataSdk.create({ user_name: currentUser, exam_type: currentExam, total_questions: 1, correct_answers: isCorrect ? 1 : 0, created_at: new Date().toISOString() }); } updateStats(); }
+    function updateStats() { document.getElementById('total-questions').textContent = sessionTotal; document.getElementById('correct-answers').textContent = sessionCorrect; const rate = sessionTotal > 0 ? Math.round((sessionCorrect / sessionTotal) * 100) : 0; document.getElementById('success-rate').textContent = rate + '%'; }
+    function showResultScreen() { const wrong = sessionTotal - sessionCorrect; const percentage = sessionTotal > 0 ? Math.round((sessionCorrect / sessionTotal) * 100) : 0; document.getElementById('result-correct').textContent = sessionCorrect; document.getElementById('result-wrong').textContent = wrong; document.getElementById('result-percentage').textContent = percentage + '%'; let message = ''; if (percentage >= 90) message = '🌟 Mükemmel! Çok başarılısın!'; else if (percentage >= 75) message = '🎯 Güzel! İyi gidiyorsun!'; else if (percentage >= 60) message = '💪 Fena değil! Biraz daha çalış!'; else if (percentage >= 50) message = '📚 Daha fazla pratik yapmalısın!'; else message = '🔥 Çabala! Sen başaracaksın!'; document.getElementById('message-text').textContent = message; createConfetti(); showScreen('result-screen'); }
+    function createConfetti() { const container = document.getElementById('confetti-container'); container.innerHTML = ''; const colors = ['#6366f1', '#8b5cf6', '#a855f7', '#ec4899', '#f43f5e']; for (let i = 0; i < 30; i++) { const confetti = document.createElement('div'); confetti.className = 'confetti'; confetti.style.left = Math.random() * 100 + '%'; confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)]; confetti.style.width = (Math.random() * 10 + 5) + 'px'; confetti.style.height = (Math.random() * 10 + 5) + 'px'; confetti.style.borderRadius = '50%'; confetti.style.position = 'fixed'; confetti.style.top = '-10px'; confetti.style.zIndex = '40'; container.appendChild(confetti); } }
+    function addChatMessage(message, isUser = false) { const container = document.getElementById('chat-messages'); const msgDiv = document.createElement('div'); msgDiv.className = `flex gap-3 ${isUser ? 'flex-row-reverse' : ''}`; msgDiv.innerHTML = `<div class="w-8 h-8 ${isUser ? 'bg-indigo-600' : 'ai-gradient'} rounded-full flex-shrink-0 flex items-center justify-center text-sm">${isUser ? '👤' : '🤖'}</div><div class="${isUser ? 'bg-indigo-600/30' : 'bg-white/5'} rounded-2xl ${isUser ? 'rounded-tr-none' : 'rounded-tl-none'} p-4 max-w-[80%]"><p class="text-sm whitespace-pre-line">${message}</p></div>`; container.appendChild(msgDiv); container.scrollTop = container.scrollHeight; }
+    function sendChatMessage() { const input = document.getElementById('chat-input'); const message = input.value.trim(); if (!message) return; addChatMessage(message, true); input.value = ''; setTimeout(() => { const response = generateAIResponse(message); addChatMessage(response, false); }, 500 + Math.random() * 1000); }
+    function formatCountdown(seconds) { const days = Math.floor(seconds / 86400); const hours = Math.floor((seconds % 86400) / 3600); const minutes = Math.floor((seconds % 3600) / 60); const secs = seconds % 60; if (days > 0) return `${days}g ${hours}s ${minutes}d`; if (hours > 0) return `${hours}s ${minutes}d ${secs}sn`; if (minutes > 0) return `${minutes}d ${secs}sn`; return `${secs}sn`; }
+    function updateCountdowns() { events.forEach(event => { const eventElement = document.querySelector(`[data-event-id="${event.event_id}"]`); if (!eventElement) return; const eventDateTime = new Date(`${event.event_date}T${event.event_time}`); const now = new Date(); const diff = eventDateTime - now; const countdownElement = eventElement.querySelector('.countdown-timer'); if (countdownElement) { if (diff > 0) { countdownElement.textContent = formatCountdown(Math.floor(diff / 1000)); countdownElement.parentElement.style.opacity = '1'; } else { countdownElement.parentElement.innerHTML = '<span class="text-green-400 font-bold">🎉 ETKİNLİK BAŞLADI!</span>'; } } }); const headerCountdowns = document.querySelectorAll('.header-event-countdown'); headerCountdowns.forEach(el => el.remove()); events.forEach(event => { const eventDateTime = new Date(`${event.event_date}T${event.event_time}`); const now = new Date(); const diff = eventDateTime - now; if (diff > 0 && diff < 86400000) { const typeEmojis = { 'workshop': '🎓', 'live-class': '📺', 'exam': '🧪', 'competition': '🏆' }; const typeEmoji = typeEmojis[event.event_type] || '📅'; const countdownDisplay = document.createElement('div'); countdownDisplay.className = 'header-event-countdown fixed top-4 left-1/2 transform -translate-x-1/2 z-40 lumera-countdown'; countdownDisplay.style.cssText = `background: linear-gradient(135deg, rgba(234, 179, 8, 0.95) 0%, rgba(202, 138, 4, 0.95) 100%); border: 2px solid rgba(234, 179, 8, 0.8); padding: 12px 28px; border-radius: 10px; backdrop-filter: blur(10px); text-align: center; min-width: 320px; box-shadow: 0 0 30px rgba(234, 179, 8, 0.6);`; const remaining = formatCountdown(Math.floor(diff / 1000)); countdownDisplay.innerHTML = `<div style="color: #000; font-weight: bold; font-size: 16px; margin-bottom: 6px;">${typeEmoji} ${event.event_name}</div><div style="color: #1a1a1a; font-size: 24px; font-weight: bold; font-family: 'Space Grotesk', monospace;">${remaining}</div>`; document.body.appendChild(countdownDisplay); } }); }
+    function updateEventDisplay() { const eventsList = document.getElementById('events-list'); document.getElementById('event-badge').textContent = events.length; if (events.length === 0) { eventsList.innerHTML = '<p class="text-center text-gray-500 py-8">Henüz etkinlik yok. Yeni bir etkinlik ekleyin!</p>'; return; } eventsList.innerHTML = events.map(event => { const typeEmojis = { 'workshop': '🎓', 'live-class': '📺', 'exam': '🧪', 'competition': '🏆' }; const typeEmoji = typeEmojis[event.event_type] || '📅'; return `<div data-event-id="${event.event_id}" class="card-gradient p-4 rounded-xl border border-white/10 hover:border-yellow-500/50 transition-all"><div class="flex items-start justify-between mb-3"><div><h4 class="font-semibold flex items-center gap-2"><span>${typeEmoji}</span>${event.event_name}</h4><p class="text-xs text-gray-500 mt-1">${event.event_date} • ${event.event_time}</p></div><button class="text-red-400 hover:text-red-300 transition-colors delete-event-btn text-lg cursor-pointer" data-event-id="${event.event_id}">✕</button></div><div class="countdown-timer text-sm font-bold text-yellow-400">Hesaplanıyor...</div><button class="w-full mt-3 py-2 bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-400 rounded-lg text-sm transition-all cursor-pointer join-event-btn" data-event-id="${event.event_id}">Etkinliğe Katıl ✓</button></div>`; }).join(''); document.querySelectorAll('.delete-event-btn').forEach(btn => { btn.addEventListener('click', async function() { const eventId = this.dataset.eventId; const eventToDelete = events.find(e => e.event_id === eventId); if (eventToDelete && eventToDelete.__backendId) { const result = await window.dataSdk.delete(eventToDelete); if (result.isOk) { events = events.filter(e => e.event_id !== eventId); updateEventDisplay(); } } }); }); document.querySelectorAll('.join-event-btn').forEach(btn => { btn.addEventListener('click', function() { const eventId = this.dataset.eventId; const event = events.find(e => e.event_id === eventId); if (event) { this.textContent = '✓ Katılım Sağlandı'; this.disabled = true; this.classList.add('opacity-50'); } }); }); updateCountdowns(); }
+    function startEventCountdowns() { eventCountdownIntervals.forEach(interval => clearInterval(interval)); eventCountdownIntervals = []; const interval = setInterval(updateCountdowns, 1000); eventCountdownIntervals.push(interval); }
+    function showLumeraCountdown() { const countdownDisplay = document.createElement('div'); countdownDisplay.className = 'lumera-countdown fixed top-4 left-1/2 transform -translate-x-1/2 z-40'; countdownDisplay.style.cssText = `background: linear-gradient(135deg, rgba(234, 179, 8, 0.95) 0%, rgba(202, 138, 4, 0.95) 100%); border: 2px solid rgba(234, 179, 8, 0.8); padding: 16px 32px; border-radius: 12px; backdrop-filter: blur(10px); text-align: center; min-width: 300px; box-shadow: 0 0 30px rgba(234, 179, 8, 0.6);`; let timeLeft = 86400; function updateDisplay() { const days = Math.floor(timeLeft / 86400); const hours = Math.floor((timeLeft % 86400) / 3600); const minutes = Math.floor((timeLeft % 3600) / 60); const seconds = timeLeft % 60; countdownDisplay.innerHTML = `<div style="color: #000; font-weight: bold; font-size: 18px; margin-bottom: 8px;">🎯 LUMERA ÖZEL ETKİNLİĞİ!</div><div style="color: #1a1a1a; font-size: 28px; font-weight: bold; font-family: 'Space Grotesk', monospace;">${days}g ${hours}s ${minutes}d ${seconds}sn</div><div style="color: #333; font-size: 12px; margin-top: 8px;">Kalan Süre ⏰</div>`; timeLeft--; if (timeLeft < 0) { countdownDisplay.innerHTML = `<div style="color: #000; font-weight: bold; font-size: 18px;">🎉 ETKİNLİK BAŞLADI!</div>`; clearInterval(countdownInterval); setTimeout(() => countdownDisplay.remove(), 5000); } } updateDisplay(); const countdownInterval = setInterval(updateDisplay, 1000); document.body.appendChild(countdownDisplay); setTimeout(() => countdownDisplay.remove(), 25000); }
+    const dataHandler = { onDataChanged(data) { userStats = data; events = data.filter(e => e.event_id); updateEventDisplay(); } };
+    async function onConfigChange(config) { const title = config.site_title || defaultConfig.site_title; const subtitle = config.welcome_text || defaultConfig.welcome_text; document.getElementById('main-title').textContent = title; document.getElementById('header-title').textContent = title; document.getElementById('main-subtitle').textContent = subtitle; }
+    document.getElementById('login-btn').addEventListener('click', function(e) { e.preventDefault(); const nameInput = document.getElementById('user-name'); const name = nameInput.value.trim(); if (!name) { nameInput.style.borderColor = '#ef4444'; return; } if (name.toUpperCase().includes('LUMERA')) showLumeraCountdown(); currentUser = name; document.getElementById('user-greeting').textContent = `Hoş geldin, ${name}!`; document.getElementById('login-screen').classList.add('hidden'); document.getElementById('dashboard').classList.remove('hidden'); });
+    document.querySelectorAll('.exam-card').forEach(card => { card.addEventListener('click', function() { currentExam = this.dataset.exam; document.getElementById('subject-title').textContent = `${currentExam} Dersleri`; renderSubjects(currentExam); document.getElementById('exam-selection').classList.add('hidden'); document.getElementById('subject-selection').classList.remove('hidden'); }); });
+    document.getElementById('back-to-exams').addEventListener('click', function() { document.getElementById('subject-selection').classList.add('hidden'); document.getElementById('exam-selection').classList.remove('hidden'); });
+    document.getElementById('finish-quiz-btn').addEventListener('click', function() { showResultScreen(); });
+    document.getElementById('next-question-btn').addEventListener('click', function() { loadNewQuestion(); });
+    document.getElementById('try-again-btn').addEventListener('click', function() { loadNewQuestion(); showScreen('question-screen'); });
+    document.getElementById('choose-subject-btn').addEventListener('click', function() { showScreen('subject-selection'); });
+    document.getElementById('go-home-btn').addEventListener('click', function() { sessionTotal = 0; sessionCorrect = 0; showScreen('exam-selection'); });
+    document.getElementById('creators-btn').addEventListener('click', function() { document.getElementById('creators-modal').classList.remove('hidden'); updateCreatorStats(); loadCreatorSettings(); });
+    document.getElementById('close-creators').addEventListener('click', function() { document.getElementById('creators-modal').classList.add('hidden'); });
+    document.getElementById('creators-modal').addEventListener('click', function(e) { if (e.target === this) this.classList.add('hidden'); });
+    document.getElementById('save-site-settings').addEventListener('click', function() { const name = document.getElementById('site-name-input').value || 'LUMERA'; const slogan = document.getElementById('site-slogan-input').value || 'Geleceğini Aydınlat'; localStorage.setItem('site_name', name); localStorage.setItem('site_slogan', slogan); document.getElementById('main-title').textContent = name; document.getElementById('header-title').textContent = name; document.getElementById('main-subtitle').textContent = slogan; this.textContent = '✓ Kaydedildi!'; setTimeout(() => { this.textContent = '✓ Ayarları Kaydet'; }, 2000); });
+    document.getElementById('save-design-settings').addEventListener('click', function() { const emoji = document.getElementById('logo-emoji-input').value.trim() || '✓'; const color = document.getElementById('theme-color-input').value; localStorage.setItem('logo_emoji', emoji); localStorage.setItem('theme_color', color); applyDesignSettings(emoji, color); this.textContent = '✓ Kaydedildi!'; setTimeout(() => { this.textContent = '✓ Tasarımı Kaydet'; }, 2000); });
+    function applyDesignSettings(emoji, color) { document.getElementById('logo-preview').textContent = emoji; document.querySelectorAll('svg defs linearGradient stop').forEach((stop, idx) => { if (idx % 3 === 0) stop.setAttribute('stop-color', color); }); const mainTitle = document.getElementById('main-title'); mainTitle.style.background = `linear-gradient(135deg, ${color} 0%, ${color}cc 50%, ${color} 100%)`; mainTitle.style.webkitBackgroundClip = 'text'; mainTitle.style.webkitTextFillColor = 'transparent'; mainTitle.style.backgroundClip = 'text'; document.querySelectorAll('.ai-gradient').forEach(el => { el.style.background = `linear-gradient(135deg, ${color} 0%, ${color}99 50%, ${color}cc 100%)`; }); }
+    function loadCreatorSettings() { const siteName = localStorage.getItem('site_name') || 'LUMERA'; const siteSlogan = localStorage.getItem('site_slogan') || 'Geleceğini Aydınlat'; const logoEmoji = localStorage.getItem('logo_emoji') || '✓'; const themeColor = localStorage.getItem('theme_color') || '#6366f1'; document.getElementById('site-name-input').value = siteName; document.getElementById('site-slogan-input').value = siteSlogan; document.getElementById('logo-emoji-input').value = logoEmoji; document.getElementById('theme-color-input').value = themeColor; document.getElementById('main-title').textContent = siteName; document.getElementById('header-title').textContent = siteName; document.getElementById('main-subtitle').textContent = siteSlogan; applyDesignSettings(logoEmoji, themeColor); }
+    function updateCreatorStats() { const uniqueUsers = new Set(userStats.map(s => s.user_name)).size; const eventCount = events.length; const questionCount = userStats.reduce((sum, s) => sum + (s.total_questions || 0), 0); document.getElementById('stat-users').textContent = uniqueUsers; document.getElementById('stat-events').textContent = eventCount; document.getElementById('stat-questions').textContent = questionCount; }
+    document.getElementById('logout-btn').addEventListener('click', function() { currentUser = ''; currentExam = ''; sessionTotal = 0; sessionCorrect = 0; document.getElementById('dashboard').classList.add('hidden'); document.getElementById('login-screen').classList.remove('hidden'); document.getElementById('user-name').value = ''; });
+    document.getElementById('ai-chat-btn').addEventListener('click', function() { document.getElementById('ai-chat-modal').classList.remove('hidden'); });
+    document.getElementById('close-chat').addEventListener('click', function() { document.getElementById('ai-chat-modal').classList.add('hidden'); });
+    document.getElementById('send-chat').addEventListener('click', function() { sendChatMessage(); });
+    document.getElementById('chat-input').addEventListener('keypress', function(e) { if (e.key === 'Enter') { e.preventDefault(); sendChatMessage(); } });
+    document.getElementById('ai-chat-modal').addEventListener('click', function(e) { if (e.target === this) this.classList.add('hidden'); });
+    document.getElementById('events-btn').addEventListener('click', function() { document.getElementById('events-modal').classList.remove('hidden'); startEventCountdowns(); });
+    document.getElementById('close-events').addEventListener('click', function() { document.getElementById('events-modal').classList.add('hidden'); eventCountdownIntervals.forEach(interval => clearInterval(interval)); });
+    document.getElementById('register-event-btn').addEventListener('click', function() { document.getElementById('create-event-modal').classList.remove('hidden'); });
+    document.getElementById('cancel-event-btn').addEventListener('click', function() { document.getElementById('create-event-modal').classList.add('hidden'); });
+    document.getElementById('save-event-btn').addEventListener('click', async function() { const name = document.getElementById('event-name-input').value.trim(); const type = document.getElementById('event-type-input').value; const date = document.getElementById('event-date-input').value; const time = document.getElementById('event-time-input').value; if (!name || !date || !time) { alert('Lütfen tüm alanları doldurun!'); return; } const eventId = 'evt_' + Date.now() + Math.random().toString(36).substr(2, 9); if (events.length < 999) { const result = await window.dataSdk.create({ event_id: eventId, event_name: name, event_type: type, event_date: date, event_time: time, registered_users: currentUser, user_name: currentUser, exam_type: 'events', total_questions: 0, correct_answers: 0, created_at: new Date().toISOString() }); if (result.isOk) { document.getElementById('event-name-input').value = ''; document.getElementById('event-date-input').value = ''; document.getElementById('event-time-input').value = ''; document.getElementById('create-event-modal').classList.add('hidden'); } } });
+    document.getElementById('create-event-modal').addEventListener('click', function(e) { if (e.target === this) this.classList.add('hidden'); });
+    async function init() { await window.elementSdk.init({ defaultConfig, onConfigChange, mapToCapabilities: () => ({ recolorables: [], borderables: [], fontEditable: undefined, fontSizeable: undefined }), mapToEditPanelValues: (config) => new Map([['site_title', config.site_title || defaultConfig.site_title], ['welcome_text', config.welcome_text || defaultConfig.welcome_text]]) }); await window.dataSdk.init(dataHandler); }
+    init();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d6a8be55400aeb3',t:'MTc3MjU2MDg4Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
